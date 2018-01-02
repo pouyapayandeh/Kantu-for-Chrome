@@ -8,7 +8,7 @@ import * as actions from '../../actions'
 
 class Auth extends React.Component {
 	onClickLogin = () => {
-		this.props.history.push('/main');
+		this.props.history.push('/dashboard');
 	  }
 	render () {
 		return (
