@@ -12,7 +12,7 @@ class App extends Component {
         <section className="content">
             <Switch>
             <Route exact path="/" render={() => (
-              <Redirect to="/auth" />
+              <Redirect to="/result" />
             )} />
 
             {routes.map((route) => (
