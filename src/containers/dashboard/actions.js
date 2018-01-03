@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
 import { bindActionCreators }  from 'redux'
 import {
   Button, Dropdown, Menu, Input, Icon, Table, Checkbox,
@@ -338,6 +339,31 @@ class DashboardActions extends React.Component {
     }
   }
 
+  onReadFileToOpenPage = (process) => (e) => {
+    const files = [].slice.call(e.target.files)
+    if (!files || !files.length)  return
+
+    const read = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader  = new FileReader()
+
+        reader.onload = (readerEvent) => {
+          try {
+            const text  = readerEvent.target.result
+            const obj   = process(text, file.name)
+            resolve({ data: obj })
+          } catch (e) {
+            resolve({ err: e, fileName: file.name })
+          }
+        }
+
+        reader.readAsText(file)
+      })
+    }
+
+    return Promise.all(files.map(read))
+  }
+
   onReadFile = (process) => (e) => {
     const files = [].slice.call(e.target.files)
     if (!files || !files.length)  return
@@ -362,6 +388,7 @@ class DashboardActions extends React.Component {
 
     Promise.all(files.map(read))
     .then(list => {
+		console.log(list)	
       const doneList = list.filter(x => x.data)
       const failList = list.filter(x => x.err)
 
@@ -397,7 +424,12 @@ class DashboardActions extends React.Component {
   onJSONFileChange = (e) => {
     return this.onReadFile(fromJSONString)(e)
   }
-
+  startPartition = (e) => {
+	  this.props.setRoute("/partition")
+	// (this.onReadFileToOpenPage(fromJSONString)(e)).then(data => {
+		
+	// });
+}
   onToggleRecord = () => {
     if (this.props.status === C.APP_STATUS.RECORDER) {
       this.props.stopRecording()
@@ -459,6 +491,18 @@ class DashboardActions extends React.Component {
             accept=".json"
             id="select_json_files"
             onChange={this.onJSONFileChange}
+            style={{display: 'none'}}
+          />
+        </Menu.Item>
+		<Menu.Divider></Menu.Divider>
+		<Menu.Item key="load_partition">
+          <label htmlFor="load_partition_page">Partition</label>
+          <input
+            multiple
+            type="file"
+            accept=".json"
+            id="load_partition_page"
+            onChange={this.startPartition}
             style={{display: 'none'}}
           />
         </Menu.Item>
@@ -681,7 +725,7 @@ class DashboardActions extends React.Component {
       </Modal>
     )
   }
-
+  
   renderRenameModal () {
     return (
       <Modal
@@ -779,7 +823,6 @@ class DashboardActions extends React.Component {
             </Dropdown>
           </Button.Group>
         </div>
-
         <div className="record-ops">
           <Button
             disabled={!isPlayerStopped}
