@@ -50,18 +50,33 @@ class App extends Component {
 
   render () {
     return (
-      <div className="app">
-        <section className="content">
-            <Switch>
-            <Route exact path="/" render={() => (
-              <Redirect to="/main" />
-            )} />
+//       <div className="app">
+//         <section className="content">
+//             <Switch>
+//             <Route exact path="/" render={() => (
+//               <Redirect to="/main" />
+//             )} />
 
-            {routes.map((route) => (
-              <Route {...route} key={route.path} />
-            ))}
-          </Switch>
-        </section>
+//             {routes.map((route) => (
+//               <Route {...route} key={route.path} />
+//             ))}
+//           </Switch>
+//         </section>
+      <div className="app with-sidebar" ref={el => { this.$app = el }}>
+        <div className="backup-alert">
+          <span>Do you want to run the automated backup?</span>
+          <span className="backup-actions">
+            <Button type="primary" onClick={this.onClickBackup}>Yes</Button>
+            <Button onClick={this.onClickNoBackup}>No</Button>
+          </span>
+        </div>
+        <div className="app-inner">
+          <Sidebar />
+          <section className="content">
+            <Header />
+            <DashboardPage />
+          </section>
+        </div>
       </div>
     );
   }
