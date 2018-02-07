@@ -425,7 +425,8 @@ class DashboardActions extends React.Component {
     return this.onReadFile(fromJSONString)(e)
   }
   startPartition = (e) => {
-	  this.props.setRoute("/partition")
+	  
+	  console.log(this)
 	// (this.onReadFileToOpenPage(fromJSONString)(e)).then(data => {
 		
 	// });
