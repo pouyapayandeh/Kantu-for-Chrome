@@ -9,7 +9,10 @@ body {
 * {
   box-sizing: border-box;
 }
-
+@font-face {
+  font-family: 'anticon';
+  src:   url('fonts/anticon.woff') format('woff');
+}
 .app {
   position: absolute;
   top: 0;

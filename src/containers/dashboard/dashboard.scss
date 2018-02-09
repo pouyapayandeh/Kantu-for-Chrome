@@ -104,6 +104,14 @@
         right: 0;
         overflow-y: auto;
       }
+      .table-wrapper-me {
+        position: absolute;
+        top: 40px;
+        bottom: 40px;
+        left: 0;
+        right: 0;
+        overflow-y: auto;
+      }
 
       .fields-wrapper {
         position: absolute;
@@ -112,7 +120,13 @@
         bottom: 0;
         height: 130px;
       }
-
+      .fields-wrapper-me {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 30px;
+      }
       .react-codemirror2 {
         position: relative;
 

@@ -119,7 +119,8 @@ class DashboardEditor extends React.Component {
   onChangeCommandsView = (type) => {
     switch (type) {
       case 'table_view':
-      case 'source_view': {
+        case 'input_partition':
+        case 'source_view': {
         const forceType = this.state.sourceErrMsg ? 'source_view' : type
 
         this.setState({
@@ -574,6 +575,85 @@ class DashboardEditor extends React.Component {
                 autoCloseBrackets: true
               }}
             />
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Input Partitions" key="input_partition">
+            <Form>
+              <Form.Item label="Command" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                <Select
+                    showSearch
+                    optionFilterProp="children"
+                    placeholder="command"
+                    disabled={!isCmdEditable}
+                    value={selectedCmd && selectedCmd.cmd}
+                    onChange={(value) => this.onDetailChange('cmd', value)}
+                    filterOption={(input, {key}) => key.toLowerCase().indexOf(input.toLowerCase()) === 0}
+                    style={{ width: '60%', marginRight: '10px' }}
+                >
+                    {availableCommands.map(cmd => (
+                        <Select.Option value={cmd} key={cmd}>
+                            {cmd}
+                        </Select.Option>
+                    ))}
+                </Select>
+                  {selectedCmd && selectedCmd.cmd ? (
+                      <a href={`https://a9t9.com/x/idehelp?cmd=${selectedCmd.cmd.toLowerCase()}`} target="_blank">
+                        Info for this command
+                      </a>
+                  ) : null}
+              </Form.Item>
+            </Form>
+            <div className="form-group table-wrapper-me" style={{marginBottom: 0}}>
+                {this.renderTable()}
+            </div>
+
+            <div className="form-group fields-wrapper-me" style={{ marginBottom: 0 }}>
+              <Form>
+                <Form.Item label="Target" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                  <div>
+                      {!selectedCmd || !selectedCmd.targetOptions ||
+                      !selectedCmd.targetOptions.length ? (
+                          <Input
+                              style={{ width: '60%', marginRight: '10px' }}
+                              placeholder="target"
+                              disabled={!isCmdEditable}
+                              value={selectedCmd && selectedCmd.target}
+                              onChange={(e) => this.onDetailChange('target', e.target.value)}
+                          />
+                      ) : (
+                          <Select
+                              style={{ width: '60%', marginRight: '10px' }}
+                              placeholder="target"
+                              disabled={!isCmdEditable}
+                              value={selectedCmd.target}
+                              onChange={(val) => this.onDetailChange('target', val)}
+                          >
+                              {selectedCmd.targetOptions.map(option => (
+                                  <Select.Option
+                                      key={option}
+                                      value={option}
+                                  >
+                                      {option}
+                                  </Select.Option>
+                              ))}
+                          </Select>
+                      )}
+                    <Button
+                        style={{ marginRight: '10px' }}
+                        disabled={!isCmdEditable}
+                        onClick={this.onToggleInspect}
+                    >
+                        {isInspecting ? (<span>Cancel</span>) : (<span>Select</span>)}
+                    </Button>
+                    <Button
+                        disabled={!isCmdEditable}
+                        onClick={this.onClickFind}
+                    >
+                      Find
+                    </Button>
+                  </div>
+                </Form.Item>
+              </Form>
+            </div>
           </Tabs.TabPane>
         </Tabs>
 
